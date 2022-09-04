@@ -1,24 +1,7 @@
-# vue-shangpinhui
+# vue-shangpinhui项目整体时间线(来源尚硅谷b站公开视频，在此表示感谢!)
 
-## Project setup
-```
-npm install
-```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## 2022/09/04 
+对项目进行初始化配置遇到的问题：
+1. vue-cli3创建vue项目后项目下面没有vue.config.js。如果需要关闭语法检查，需要自己新建vue.config.js，在里面可以进行很多配置。具体配置可以参考官方文档：https://cli.vuejs.org/zh/config/#vue-config-js
+2. 引用其他组件的时候总是用./ ../ 来找到对应的组件,很容易出错。如果想要通过@表示src文件夹的方式找到组件，需要在项目中新建jsconfig.json文件,在里面配置。<p style="color:red">但是目前我配置的好的使用不会出问题，通过alt+鼠标左键的方式却无法进入对应的组件，网上查了好多方法，都是无效，目前还没解决。</p>
