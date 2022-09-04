@@ -10,6 +10,7 @@ const routes=[
         component:()=>import("@/pages/Home"),
         meta:{
             title:"主页",
+            show:true
         }
     },
     {
@@ -18,6 +19,7 @@ const routes=[
         component:()=>import("@/pages/Login"),
         meta:{
             title:"登录",
+            show:false
         }
     },
     {
@@ -26,6 +28,7 @@ const routes=[
         component:()=>import("@/pages/Register"),
         meta:{
             title:"注册",
+            show:false
         }
     },
     {
@@ -34,6 +37,7 @@ const routes=[
         component:()=>import("@/pages/Search"),
         meta:{
             title:"查找",
+            show:true
         }
     }
 

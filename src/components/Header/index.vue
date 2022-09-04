@@ -38,7 +38,7 @@
               id="autocomplete"
               class="input-error input-xxlarge"
             />
-            <button class="sui-btn btn-xlarge btn-danger" type="button">
+            <button class="sui-btn btn-xlarge btn-danger" type="button" @click="toSearch">
               搜索
             </button>
           </form>
@@ -51,6 +51,11 @@
 <script>
 export default {
   name: "Header",
+  methods:{
+    toSearch(){
+      this.$router.push("/search")
+    }
+  }
 };
 </script>
 
