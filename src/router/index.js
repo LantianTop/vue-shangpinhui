@@ -36,7 +36,7 @@ const routes=[
         }
     },
     {
-        path:"/search/:keyword",
+        path:"/search/:keyword?",
         name:"Search",
         component:()=>import("@/pages/Search/"),
         meta:{

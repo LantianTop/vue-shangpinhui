@@ -66,7 +66,7 @@ export default {
       // 路由传参第三种方式，通过对象传值
       this.$router.push({
         name:"Search",
-        params:{keyword:this.keyword},
+        // params:{keyword:this.keyword},
         query:{k:this.keyword.toUpperCase()}
 
       })
