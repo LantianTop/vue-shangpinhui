@@ -5,6 +5,10 @@ Vue.use(VueRouter);
 
 const routes=[
     {
+        path:"/",
+        redirect:"/home"
+    },
+    {
         path:"/home",
         name:"Home",
         component:()=>import("@/pages/Home"),
@@ -32,9 +36,9 @@ const routes=[
         }
     },
     {
-        path:"/search",
+        path:"/search/:keyword",
         name:"Search",
-        component:()=>import("@/pages/Search"),
+        component:()=>import("@/pages/Search/"),
         meta:{
             title:"查找",
             show:true

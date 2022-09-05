@@ -1,6 +1,6 @@
 <template>
   <div>
-    <span>我是搜索组件</span>
+    <span>params参数为:{{$route.params.keyword}}---query参数为:{{$route.query.k}}</span>
   </div>
 </template>
 
