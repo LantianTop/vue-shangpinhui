@@ -6,6 +6,8 @@ Vue.config.productionTip = false
 // 将TypeNav组价注册为全局组件
 Vue.component(TypeNav.name,TypeNav)
 
+import {reqCategoryList} from "@/api"
+reqCategoryList();
 new Vue({
   render: h => h(App),
   router,
