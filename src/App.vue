@@ -9,16 +9,20 @@
     这种方式如果有几百个路由组件就很难写了，不推荐
     -->
     <!-- 2.通过路由元信息meta来配置 -->
-    <Footer v-show="$route.meta.show"></Footer>
+   <Footer v-show="$route.meta.show"></Footer> 
+
+
   </div>
 </template>
 
 <script>
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+
+
 export default {
   name: 'App',
-  components:{Footer,Header}
+  components:{Footer,Header,}
 }
 </script>
 
