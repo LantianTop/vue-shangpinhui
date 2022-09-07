@@ -13,27 +13,50 @@
         <a href="###">有趣</a>
         <a href="###">秒杀</a>
       </nav>
-      <div class="sort">
-        <div class="all-sort-list2">
-          <div class="item"  
-              v-for="(c1,index) in categoryListReal " 
-              :key="c1.categoryId" 
-              :class="{cur:currentIndex===index}"
-            >
-            <h3 @mouseenter="changeIndex(index)" @mouseleave="resetIndex" >
-              <a href="">{{c1.categoryName}}</a>
+      <div class="sort"  v-show="show" @mouseleave="currentIndex=-1">
+        <!-- 利用事件委派+编程式导航实现路由的跳转和传递参数 -->
+        <div class="all-sort-list2" @click="goSearch">
+          <div
+            class="item"
+            v-for="(c1, index) in categoryListReal"
+            :key="c1.categoryId"
+            :class="{ cur: currentIndex === index }"
+          >
+            <h3 @mouseenter="changeIndex(index)">
+              <a
+                :data-categoryName="c1.categoryName"
+                :data-categoryId1="c1.categoryId"
+                >{{ c1.categoryName }}</a
+              >
             </h3>
-            <div class="item-list clearfix"  :style="{display:currentIndex==index?'block':'none'}"  >
-              <div class="subitem" v-for="(c2,index) in c1.categoryChild" :key="c2.categoryId">
+            <div
+              class="item-list clearfix"
+              :style="{ display: currentIndex == index ? 'block' : 'none' }"
+            >
+              <div
+                class="subitem"
+                v-for="(c2, index) in c1.categoryChild"
+                :key="c2.categoryId"
+              >
                 <dl class="fore">
                   <dt>
-                    <a href="">{{c2.categoryName}}</a>
+                    <a
+                      :data-categoryName="c2.categoryName"
+                      :data-categoryId2="c2.categoryId"
+                      >{{ c2.categoryName }}</a
+                    >
                   </dt>
                   <dd>
-                    <em v-for="(c3,index) in c2.categoryChild" :key="c3.categoryId">
-                      <a href="">{{c3.categoryName}}</a>
+                    <em
+                      v-for="(c3, index) in c2.categoryChild"
+                      :key="c3.categoryId"
+                    >
+                      <a
+                        :data-categoryName="c3.categoryName"
+                        :data-categoryId3="c3.categoryId"
+                        >{{ c3.categoryName }}</a
+                      >
                     </em>
-  
                   </dd>
                 </dl>
               </div>
@@ -46,41 +69,72 @@
 </template>
 
 <script>
-import {mapState} from "vuex"; 
+import { mapState } from "vuex";
 export default {
-    name:"TypeNav",
-    data(){
-      return{
-       // 接收state传过来的数据,方便进行按需修改
-      categoryListR:[],
-       // 默认索引值
-      currentIndex:-1
-    }
+  name: "TypeNav",
+  data() {
+    return {
+      // 接收state传过来的数据,方便进行按需修改
+      categoryListR: [],
+      // 默认索引值
+      currentIndex: -1,
+      // 当前组件三级联动界面是否展示
+      show:true,
+    };
+  },
+  computed: {
+    // 数组表示，中括号里面categoryList表示ES6模块kv一致省略v,
+    //下面一行代码的意思就是本组件计算属性为categoryList,这个计算属性
+    //的返回值来自于store中home模块中的state里面的categoryList。前提需要在home模块中声明namespaced:true.不然无法找到子模块从而报错。
+    ...mapState("home", ["categoryList"]),
+    categoryListReal() {
+      this.categoryListR = this.categoryList;
+      return this.categoryListR.slice(0, 15);
     },
-    computed:{
-      // 数组表示，中括号里面categoryList表示ES6模块kv一致省略v,
-      //下面一行代码的意思就是本组件计算属性为categoryList,这个计算属性
-      //的返回值来自于store中home模块中的state里面的categoryList。前提需要在home模块中声明namespaced:true.不然无法找到子模块从而报错。
-      ...mapState("home",["categoryList"]),
-      categoryListReal(){
-         this.categoryListR=this.categoryList
-         return this.categoryListR.slice(0,15) 
+  },
+  methods: {
+    changeIndex(index) {
+      this.currentIndex = index;
+    },
+
+    goSearch(event) {
+      // 导航栏三级联动进行路由跳转
+      // Q1:给三级联动最近的父节点添加点击事件,里面有很多标签（a,div,h3等）,如何确定点击的是什么标签
+      // Q2:确定点击a标签后,如何区别是一级a标签还是二级a标签还是三级a标签
+      // A1:浏览器默认会传入一个形参event,通过event.target可以获取点击的整个标签属性，
+      // 通过event.target可以获取到a标签内容，但是其中还有被h3包住的a标签，如何查找定位a标签
+      let element = event.target;
+      //方法一.element.getAttribute("date-categoryName")可以获取到标签中date-categoryName属性的值
+      //方法二:利用标签的nodeName找到最外层标签名,从而确定点击的是a还是h3,如果是被h3包住的a，不会
+      // 显示a,而是显示h3.但是无法区别是哪一级列表
+      // 方法三: 节点通过datasetAPI可以获取到自定义属性和属性值
+      let { categoryname, categoryid2, categoryid1, categoryid3 } =
+        element.dataset;
+      console.log(element.dataset);
+      if (categoryname) {
+        // 此时已经确定点击的是a标签,不是的话categoryname为undefine,无法进入if循环
+        // 整理下路由跳转的参数
+        var location01 = { name: "Search" };
+        var query = { categoryName: categoryname };
+        if (categoryid1) {
+          query.categoryId = categoryid1;
+        } else if (categoryid2) {
+          query.categoryId = categoryid2;
+        } else {
+          query.categoryId = categoryid3;
+        }
+        location01.query = query;
       }
+      // 编程式导航跳转路由
+      this.$router.push(location01);
     },
-    methods:{
-      changeIndex(index){
-            this.currentIndex=index;
-            console.log("鼠标进入"+index);
-      },
-      resetIndex(){
-        this.currentIndex=-1
-      }
-    },
-    // 组件挂载完毕，发送ajax请求获取服务器端数据
-     mounted(){
-        this.$store.dispatch("home/categoryList");
-    }
-}
+  },
+  // 组件挂载完毕，发送ajax请求获取服务器端数据
+  mounted() {
+    this.$store.dispatch("home/categoryList");
+
+  },
+};
 </script>
 
 <style scoped lang="less">
@@ -199,8 +253,9 @@ export default {
           //   }
           // }
         }
-        .cur{
+        .cur {
           background: skyblue;
+          cursor: pointer;
         }
       }
     }
