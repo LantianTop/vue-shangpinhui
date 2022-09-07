@@ -1,8 +1,8 @@
 <template>
   <!-- 商品分类导航 -->
   <div class="type-nav">
-    <div class="container">
-      <h2 class="all">全部商品分类</h2>
+    <div class="container" @mouseenter="enter"  @mouseleave="leave">
+      <h2 class="all" >全部商品分类</h2>
       <nav class="nav">
         <a href="###">服装城</a>
         <a href="###">美妆馆</a>
@@ -13,9 +13,9 @@
         <a href="###">有趣</a>
         <a href="###">秒杀</a>
       </nav>
-      <div class="sort"  v-show="show" @mouseleave="currentIndex=-1">
+      <div class="sort"  v-show="show" @mouseleave="currentIndex=-1"   >
         <!-- 利用事件委派+编程式导航实现路由的跳转和传递参数 -->
-        <div class="all-sort-list2" @click="goSearch">
+        <div class="all-sort-list2" @click="goSearch" >
           <div
             class="item"
             v-for="(c1, index) in categoryListReal"
@@ -110,7 +110,6 @@ export default {
       // 方法三: 节点通过datasetAPI可以获取到自定义属性和属性值
       let { categoryname, categoryid2, categoryid1, categoryid3 } =
         element.dataset;
-      console.log(element.dataset);
       if (categoryname) {
         // 此时已经确定点击的是a标签,不是的话categoryname为undefine,无法进入if循环
         // 整理下路由跳转的参数
@@ -125,14 +124,27 @@ export default {
         }
         location01.query = query;
       }
+      if(this.$route.params){
+        location01.params= this.$route.params;
+      }
       // 编程式导航跳转路由
       this.$router.push(location01);
     },
+    enter(){
+      this.show=true;
+    },
+    leave(){
+      if(this.$route.path!="/home"){
+        this.show=false;
+      }
+    }
   },
   // 组件挂载完毕，发送ajax请求获取服务器端数据
   mounted() {
     this.$store.dispatch("home/categoryList");
-
+    if(this.$route.path!="/home"){
+        this.show=false;
+    }
   },
 };
 </script>

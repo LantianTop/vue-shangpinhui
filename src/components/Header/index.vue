@@ -64,12 +64,13 @@ export default {
        // 路由传参第二种方式,模板字符串传值
       // this.$router.push('/search/${this.keyword}?k=${this.keyword.toUpperCase()}')
       // 路由传参第三种方式，通过对象传值
-      this.$router.push({
-        name:"Search",
-        params:{keyword:this.keyword},
-        query:{k:this.keyword.toUpperCase()}
 
-      })
+      if(this.$route.query){
+        let location ={name:"Search",params:{keyword:this.keyword} };
+        location.query=this.$route.query;
+        this.$router.push(location)
+      }
+   
 }
   }
 };

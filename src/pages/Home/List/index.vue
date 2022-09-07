@@ -94,7 +94,10 @@
 <script>
 export default {
   name: "List",
-  
+  mounted(){
+    // 向vuex派发action,将数据存储在home模块的module中
+    this.$store.dispatch("home/getBannerList")
+  }
 };
 </script>
 
