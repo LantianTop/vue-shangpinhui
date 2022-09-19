@@ -3,7 +3,7 @@
   <div class="floor">
     <div class="py-container">
       <div class="title clearfix">
-        <h3 class="fl">家用电器</h3>
+        <h3 class="fl">{{list.name}}</h3>
         <div class="fr">
           <ul class="nav-tabs clearfix">
             <li class="active">
@@ -35,20 +35,15 @@
           <div class="floor-1">
             <div class="blockgary">
               <ul class="jd-list">
-                <li>节能补贴</li>
-                <li>4K电视</li>
-                <li>空气净化器</li>
-                <li>IH电饭煲</li>
-                <li>滚筒洗衣机</li>
-                <li>电热水器</li>
+                <li  v-for="(key,index) in list.keywords" :key="index">{{key}}</li>
               </ul>
-              <img src="./images/floor-1-1.png" />
+              <img :src="list.imgUrl" />
             </div>
             <div class="floorBanner">
               <div class="swiper-container" id="floor1Swiper">
                 <div class="swiper-wrapper">
-                  <div class="swiper-slide">
-                    <img src="./images/floor-1-b01.png" />
+                  <div class="swiper-slide" v-for="(f,index) in list.carouselList" :key="index">
+                    <img :src="f.imgUrl" />
                   </div>
                 </div>
                 <!-- 如果需要分页器 -->
@@ -88,8 +83,32 @@
 </template>
 
 <script>
+import Swiper from "swiper";
 export default {
     name:"FamilyDevice",
+    props:["list"],
+    mounted(){
+      var mySwiper = new Swiper("#floor1Swiper", {
+      loop: true, // 循环模式选项
+
+      // 如果需要分页器
+      pagination: {
+        el: ".swiper-pagination",
+        clickable :true,
+      },
+
+      // 如果需要前进后退按钮
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+
+      // 如果需要滚动条
+      scrollbar: {
+        el: ".swiper-scrollbar",
+      },
+    });
+    }
 };
 </script>
 

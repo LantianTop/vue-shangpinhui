@@ -1,8 +1,8 @@
 <template>
   <!-- 商品分类导航 -->
   <div class="type-nav">
-    <div class="container" @mouseenter="enter"  @mouseleave="leave">
-      <h2 class="all" >全部商品分类</h2>
+    <div class="container" >
+      <h2 class="all" @mouseleave="leave"  @mouseenter="enter" >全部商品分类</h2>
       <nav class="nav">
         <a href="###">服装城</a>
         <a href="###">美妆馆</a>
@@ -13,7 +13,7 @@
         <a href="###">有趣</a>
         <a href="###">秒杀</a>
       </nav>
-      <div class="sort"  v-show="show" @mouseleave="currentIndex=-1"   >
+      <div class="sort"  v-show="show"  @mouseleave="leave"  @mouseenter="enter" >
         <!-- 利用事件委派+编程式导航实现路由的跳转和传递参数 -->
         <div class="all-sort-list2" @click="goSearch" >
           <div
@@ -86,7 +86,10 @@ export default {
     // 数组表示，中括号里面categoryList表示ES6模块kv一致省略v,
     //下面一行代码的意思就是本组件计算属性为categoryList,这个计算属性
     //的返回值来自于store中home模块中的state里面的categoryList。前提需要在home模块中声明namespaced:true.不然无法找到子模块从而报错。
-    ...mapState("home", ["categoryList"]),
+    // ...mapState("home", ["categoryList"]),
+    categoryList(){
+      return this.$store.state.home.categoryList;
+    },
     categoryListReal() {
       this.categoryListR = this.categoryList;
       return this.categoryListR.slice(0, 15);
@@ -96,7 +99,15 @@ export default {
     changeIndex(index) {
       this.currentIndex = index;
     },
-
+    enter(){
+      this.show=true;
+    },
+    leave(){
+      this.currentIndex=-1;
+      if(this.$route.path!="/home"){
+        this.show=false;
+      }
+    },
     goSearch(event) {
       // 导航栏三级联动进行路由跳转
       // Q1:给三级联动最近的父节点添加点击事件,里面有很多标签（a,div,h3等）,如何确定点击的是什么标签
@@ -108,19 +119,19 @@ export default {
       //方法二:利用标签的nodeName找到最外层标签名,从而确定点击的是a还是h3,如果是被h3包住的a，不会
       // 显示a,而是显示h3.但是无法区别是哪一级列表
       // 方法三: 节点通过datasetAPI可以获取到自定义属性和属性值
-      let { categoryname, categoryid2, categoryid1, categoryid3 } =
-        element.dataset;
+      let { categoryname, categoryid2, categoryid1, categoryid3 } =element.dataset;
+      console.log(element.dataset)
       if (categoryname) {
         // 此时已经确定点击的是a标签,不是的话categoryname为undefine,无法进入if循环
         // 整理下路由跳转的参数
         var location01 = { name: "Search" };
         var query = { categoryName: categoryname };
         if (categoryid1) {
-          query.categoryId = categoryid1;
+          query.category1Id = categoryid1;
         } else if (categoryid2) {
-          query.categoryId = categoryid2;
+          query.category2Id = categoryid2;
         } else {
-          query.categoryId = categoryid3;
+          query.category3Id = categoryid3;
         }
         location01.query = query;
       }
@@ -130,14 +141,7 @@ export default {
       // 编程式导航跳转路由
       this.$router.push(location01);
     },
-    enter(){
-      this.show=true;
-    },
-    leave(){
-      if(this.$route.path!="/home"){
-        this.show=false;
-      }
-    }
+
   },
   // 组件挂载完毕，发送ajax请求获取服务器端数据
   mounted() {

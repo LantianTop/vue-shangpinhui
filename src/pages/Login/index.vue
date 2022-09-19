@@ -1,6 +1,6 @@
 <template>
   <div>
-    <span>我是login组件</span>
+    <span>我是login组件dadasfsfd</span>
   </div>
 </template>
 

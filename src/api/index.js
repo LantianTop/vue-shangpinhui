@@ -14,3 +14,15 @@ export const  reqBannerList=()=>mockRequest({
     "url":"/banner",
     "method":"get"
 })
+// 家用电器请求接口--->mock出来的数据
+export const  reqFloorList=()=>mockRequest({
+    "url":"/floor",
+    "method":"get"
+})
+// 获取搜索模块数据  地址:/api/list  请求方式:POST  需要带参数
+export const  reqGetSearchInfo=(params)=>requests({
+    "url":"/list",
+     method:"post",
+     data:params
+})
+
