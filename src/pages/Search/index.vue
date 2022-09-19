@@ -20,7 +20,9 @@
           </ul>
         </div>
 
-        <SearchSelector @tradeMark="trademark" />
+        <SearchSelector @tradeMark="trademark" @attrInfo="attrInfo" />
+
+
         <div class="details clearfix">
           <div class="sui-navbar">
             <div class="navbar-inner filter">
@@ -198,6 +200,11 @@
             this.searchParams.trademark=undefined;
             this.getData();
 
+          },
+          attrInfo(attr,attrValue){
+               var props=`${attr.attrId}:${attrValue}:${attr.attrName}`
+               this.searchParams.props.push(props)
+               this.getData()
           }
 
     },
