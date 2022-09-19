@@ -4,7 +4,7 @@
       <div class="fl key brand">品牌</div>
       <div class="value logos">
         <ul class="logo-list">
-          <li v-for="(t,index) in trademarkList" :key="t.tmId">{{t.tmName}}</li>
+          <li v-for="(t,index) in trademarkList" :key="t.tmId" @click="trademarkInfo(t)">{{t.tmName}}</li>
         </ul>
       </div>
       <div class="ext">
@@ -34,6 +34,11 @@
     computed:{
       ...mapGetters("search",["trademarkList","attrsList"])
     },
+    methods:{
+      trademarkInfo(t){
+         this.$emit("tradeMark",t)
+      }
+    }
   }
 </script>
 
@@ -92,7 +97,9 @@
             color: #e1251b;
             font-style: italic;
             font-size: 14px;
-
+            &:hover{
+              cursor: pointer;
+            }
             img {
               max-width: 100%;
               vertical-align: middle;

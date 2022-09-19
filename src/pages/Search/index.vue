@@ -15,11 +15,12 @@
             <li class="with-x" v-if="searchParams.categoryName">{{searchParams.categoryName}}<i @click="removeCategoryName">x</i></li>
             <!-- 关键字的面包屑 -->
             <li class="with-x" v-if="searchParams.keyword">{{searchParams.keyword}}<i @click="removeKeyword">x</i></li>
-         
+            <!-- 品牌的面包屑 -->
+            <li class="with-x" v-if="searchParams.trademark">{{searchParams.trademark.split(":")[1]}}<i @click="removeBread">x</i></li>
           </ul>
         </div>
 
-        <SearchSelector/>
+        <SearchSelector @tradeMark="trademark" />
         <div class="details clearfix">
           <div class="sui-navbar">
             <div class="navbar-inner filter">
@@ -189,6 +190,16 @@
                 }     
           },
           // 自定义事件的触发
+          trademark(t){
+            this.searchParams.trademark=`${t.tmId}:${t.tmName}`;
+            this.getData();
+          },
+          removeBread(){
+            this.searchParams.trademark=undefined;
+            this.getData();
+
+          }
+
     },
     // 通过监听路由变化从而实现重新发送请求
     watch: {
